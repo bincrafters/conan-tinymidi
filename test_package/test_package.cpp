@@ -1,7 +1,12 @@
 #include <iostream>
 
+extern "C"
+{
+#include <rawmidi.h>
+}
+
 int main()
 {
-    std::cout << "Bincrafters\n";
+    rawmidi_hw_print_info("/dev/midi");
     return 0;
 }
