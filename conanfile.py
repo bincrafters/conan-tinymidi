@@ -41,6 +41,8 @@ class TinyMidiConan(ConanFile):
             tools.replace_in_file("Makefile",
                                   "INSTALL_PREFIX=/usr",
                                   "INSTALL_PREFIX=%s" % self.package_folder)
+            tools.replace_in_file("Makefile", "COMPILE_FLAGS = ", "COMPILE_FLAGS = $(CFLAGS) ")
+            tools.replace_in_file("Makefile", "LINKING_FLAGS = ", "LINKING_FLAGS = $(CFLAGS) ")
             tools.mkdir(os.path.join(self.package_folder, 'include'))
             tools.mkdir(os.path.join(self.package_folder, 'lib'))
             env_build = AutoToolsBuildEnvironment(self)
