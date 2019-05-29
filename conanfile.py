@@ -52,6 +52,12 @@ class TinyMidiConan(ConanFile):
 
     def package(self):
         self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder)
+        if self.options.shared:
+            os.unlink(os.path.join(self.package_folder, "lib", "libtinymidi.a"))
+        else:
+            os.unlink(os.path.join(self.package_folder, "lib", "libtinymidi.so"))
+            os.unlink(os.path.join(self.package_folder, "lib", "libtinymidi.so.1"))
+            os.unlink(os.path.join(self.package_folder, "lib", "libtinymidi.so.1.0.0"))
 
     def package_info(self):
         self.cpp_info.libs = ["tinymidi"]
