@@ -26,8 +26,9 @@ class TinyMidiConan(ConanFile):
 
     def system_requirements(self):
         if tools.os_info.with_apt:
-            installer = SystemPackageTool()
-            installer.install("libtool-bin")
+            if not tools.which("libtool"):
+                installer = SystemPackageTool()
+                installer.install("libtool-bin")
 
     def source(self):
         revision = "3162cf8faff04e26a8daa846618b90326f71b9d5"
