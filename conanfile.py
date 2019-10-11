@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from conans import ConanFile, AutoToolsBuildEnvironment, tools
 from conans.tools import SystemPackageTool
 import os
@@ -23,6 +21,7 @@ class TinyMidiConan(ConanFile):
 
     def configure(self):
         del self.settings.compiler.libcxx
+        del self.settings.compiler.cppstd
 
     def system_requirements(self):
         if tools.os_info.with_apt:
