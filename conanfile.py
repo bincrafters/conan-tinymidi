@@ -10,7 +10,6 @@ class TinyMidiConan(ConanFile):
     topics = ("conan", "tinymidi", "MIDI")
     url = "https://github.com/bincrafters/conan-tinymidi"
     homepage = "https://github.com/krgn/tinymidi"
-    author = "Bincrafters <bincrafters@gmail.com>"
     license = "LGPL-3.0-only"
     exports = ["LICENSE.md"]
     settings = {"os": ["Linux"], "arch": None, "compiler": None, "build_type": None}
