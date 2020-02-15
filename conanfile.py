@@ -47,11 +47,11 @@ class TinyMidiConan(ConanFile):
             tools.mkdir(os.path.join(self.package_folder, 'lib'))
             env_build = AutoToolsBuildEnvironment(self)
             env_build.make()
-            env_build.install()
 
     def package(self):
-        env_build = AutoToolsBuildEnvironment(self)
-        env_build.install()
+        with tools.chdir(self._source_subfolder):
+            env_build = AutoToolsBuildEnvironment(self)
+            env_build.install()
         self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder)
         if self.options.shared:
             os.unlink(os.path.join(self.package_folder, "lib", "libtinymidi.a"))
