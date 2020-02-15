@@ -1,5 +1,6 @@
 from conans import ConanFile, AutoToolsBuildEnvironment, tools
 from conans.tools import SystemPackageTool
+from conans.errors import ConanInvalidConfiguration
 import os
 
 
@@ -11,8 +12,7 @@ class TinyMidiConan(ConanFile):
     url = "https://github.com/bincrafters/conan-tinymidi"
     homepage = "https://github.com/krgn/tinymidi"
     license = "LGPL-3.0-only"
-    exports = ["LICENSE.md"]
-    settings = {"os": ["Linux"], "arch": None, "compiler": None, "build_type": None}
+    settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
     _source_subfolder = "source_subfolder"
@@ -21,6 +21,8 @@ class TinyMidiConan(ConanFile):
     def configure(self):
         del self.settings.compiler.libcxx
         del self.settings.compiler.cppstd
+        if self.settings.os != "Linux":
+            raise ConanInvalidConfiguration("Only Linux is supported")
 
     def system_requirements(self):
         if tools.os_info.with_apt:
@@ -29,10 +31,9 @@ class TinyMidiConan(ConanFile):
                 installer.install("libtool-bin")
 
     def source(self):
-        revision = "3162cf8faff04e26a8daa846618b90326f71b9d5"
-        source_url = "https://github.com/krgn/tinymidi/archive/%s.zip" % revision
-        tools.get(source_url, sha256="a3ffcbc463559c6db3cfe40510a9859502d51f4cf8033966073a1a58224d3476")
-        extracted_dir = self.name + "-" + revision
+        commit = os.path.splitext(os.path.basename(self.conan_data["sources"][self.version]["url"]))[0]
+        tools.get(**self.conan_data["sources"][self.version])
+        extracted_dir = self.name + "-" + commit
         os.rename(extracted_dir, self._source_subfolder)
 
     def build(self):
@@ -49,6 +50,8 @@ class TinyMidiConan(ConanFile):
             env_build.install()
 
     def package(self):
+        env_build = AutoToolsBuildEnvironment(self)
+        env_build.install()
         self.copy(pattern="LICENSE", dst="licenses", src=self._source_subfolder)
         if self.options.shared:
             os.unlink(os.path.join(self.package_folder, "lib", "libtinymidi.a"))
