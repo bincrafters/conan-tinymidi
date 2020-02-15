@@ -6,8 +6,7 @@ import os
 
 class TinyMidiConan(ConanFile):
     name = "tinymidi"
-    version = "20130325"
-    description = "a small C library for doing MIDI on GNU/Linux"
+    description = "A small C library for doing MIDI on GNU/Linux"
     topics = ("conan", "tinymidi", "MIDI")
     url = "https://github.com/bincrafters/conan-tinymidi"
     homepage = "https://github.com/krgn/tinymidi"
