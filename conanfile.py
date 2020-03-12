@@ -17,17 +17,13 @@ class TinyMidiConan(ConanFile):
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
 
+    build_requires = "libtool/2.4.6"
+
     def configure(self):
         del self.settings.compiler.libcxx
         del self.settings.compiler.cppstd
         if self.settings.os != "Linux":
             raise ConanInvalidConfiguration("Only Linux is supported")
-
-    def system_requirements(self):
-        if tools.os_info.with_apt:
-            if not tools.which("libtool"):
-                installer = SystemPackageTool()
-                installer.install("libtool-bin")
 
     def source(self):
         commit = os.path.splitext(os.path.basename(self.conan_data["sources"][self.version]["url"]))[0]
